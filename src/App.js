@@ -8,9 +8,13 @@ function App() {
         console.log('Need to add book with:',title);
     };
 
-    return <div>
-        <BookCreate onCreate={createBook} />
-        </div>;
+
+
+    return (
+        <div>
+            <BookCreate onCreate={createBook} />
+        </div>
+    ); 
 }
 
 export default App;
