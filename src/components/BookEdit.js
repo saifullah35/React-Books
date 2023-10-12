@@ -9,6 +9,8 @@ function BookEdit({ book }) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        onEdit(book.id, title);
     };
 
     return (
