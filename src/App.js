@@ -1,9 +1,23 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import BookCreate from './components/BookCreate';
 import BookList from './components/BookList';
 
 function App() {
     const [books, setBooks] = useState([]);
+
+    const fetchBooks = async () => {
+        const response = await axios.get('http://localhost:3001/books');
+
+        setBooks(response.data);
+    };
+
+    useEffect(() => {
+        fetchBooks();
+    }, []);
+
+    // Dont do this
+    // fetchBooks();
 
     const editBookByid = (id, newTitle) => {
         const updatedBooks = books.map((book) => {
@@ -25,9 +39,16 @@ function App() {
         setBooks(updatedBooks);
     };
 
-    const createBook = (title) => {
+    const createBook = async (title) => {
+        const response = await axios.post('http://localhost:3001/books', {
+            title
+        });
+
         // Array of updated books
-        const updatedBooks = [...books,{id: Math.round(Math.random() * 999), title}];
+        const updatedBooks = [
+            ...books,
+            response.data
+        ];
         setBooks(updatedBooks);
     };
 
@@ -41,3 +62,5 @@ function App() {
 }
 
 export default App;
+
+// useEffect() is use to run code when a component is initially rendered and sometimes when it is rerendered
