@@ -19,10 +19,14 @@ function App() {
     // Dont do this
     // fetchBooks();
 
-    const editBookByid = (id, newTitle) => {
+    const editBookByid = async (id, newTitle) => {
+        await axios.put(`http://localhost:3001/books/${id}`, {
+            title: newTitle,
+        });
+
         const updatedBooks = books.map((book) => {
             if (book.id === id) {
-                return {...book, title: newTitle};
+                return {...book, ...response.data };
             }
 
             return book;
@@ -31,7 +35,9 @@ function App() {
         setBooks(updatedBooks);
     };
 
-    const deleteBookById = (id) => {
+    const deleteBookById = async (id) => {
+        await axios.delete(`http://localhost:3001/books/${id}`);
+
         const updatedBooks = books.filter((book) => {
             return book.id !== id;
         });
@@ -64,3 +70,10 @@ function App() {
 export default App;
 
 // useEffect() is use to run code when a component is initially rendered and sometimes when it is rerendered
+// Tricky things with useEffect
+// 1. Understanding when our arrow function gets called
+// 2. Understanding the arrow function's return value  
+
+// ...response.data --> updated book object that came back from the api
+// means take all the different properties out of that object, take all the different key value pairs, 
+// and add them into this new object right here ...book
